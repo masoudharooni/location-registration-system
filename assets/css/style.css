@@ -1,0 +1,77 @@
+@font-face {
+    font-family: sahel;
+    font-style: normal;
+    font-weight: 300;
+    src: url('../fonts/Sahel-Light.woff') format('woff');
+}
+
+@font-face {
+    font-family: sahel;
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/Sahel.woff') format('woff');
+}
+
+@font-face {
+    font-family: sahel;
+    font-style: normal;
+    font-weight: 500;
+    src: url('../fonts/Sahel-Bold.woff') format('woff');
+}
+
+@font-face {
+    font-family: sahel;
+    font-style: normal;
+    font-weight: 700;
+    src: url('../fonts/Sahel-Black.woff') format('woff');
+}
+
+html, body, .mapContainer {
+    padding: 0;
+    margin: 0;
+    direction: rtl;
+    text-align: right;
+}
+
+.mapContainer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+#map {
+    position: relative;
+    height: 100%;
+}
+
+.head {
+    width: 100%;
+    position: fixed;
+    top: 30px;
+    z-index: 999;
+}
+
+.head #search {
+    float: right;
+    margin-right: 50px;
+    text-align: right;
+    border: 1px solid #d8d6d2;
+    border-radius: 5px;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 10px;
+    padding: 10px 20px;
+    direction: rtl;
+    font-family: sahel;
+    opacity: 0.9;
+    outline: 0;
+    transition: .3s;
+}
+
+.head #search:hover {
+    border: 1px solid #444;
+    transition: .3s;
+}
