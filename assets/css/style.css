@@ -1,5 +1,5 @@
 @font-face {
-    font-family: sahel;
+    font-family: sahelLight;
     font-style: normal;
     font-weight: 300;
     src: url('../fonts/Sahel-Light.woff') format('woff');
@@ -13,14 +13,14 @@
 }
 
 @font-face {
-    font-family: sahel;
+    font-family: sahelBold;
     font-style: normal;
     font-weight: 500;
     src: url('../fonts/Sahel-Bold.woff') format('woff');
 }
 
 @font-face {
-    font-family: sahel;
+    font-family: sahelBlack;
     font-style: normal;
     font-weight: 700;
     src: url('../fonts/Sahel-Black.woff') format('woff');
@@ -154,6 +154,7 @@ i.satellite {
     text-align: right;
     margin: 100px auto;
     box-sizing: border-box;
+    position: relative;
 }
 
 input {
@@ -237,4 +238,61 @@ div.locNotExist {
     color: red;
     padding: 10px;
     font-family: 'sahel';
+}
+
+.resultFilterLoc {
+    width: 81%;
+    height: 120px;
+    background-color: #88888823;
+    position: absolute;
+    bottom: 0;
+    left: 20px;
+    padding: 0;
+    text-align: center;
+    font-family: 'sahelBlack';
+    overflow-y: scroll;
+    font-size: 25px;
+}
+
+.resultFilterElement {
+    font-size: 18px;
+    padding: 10px;
+    border-bottom: 2px solid gray;
+    font-family: sahelLIght;
+}
+
+.resultFilterElement:hover {
+    background-color: #62626223;
+    cursor: pointer;
+}
+
+.resultFilterElement span:last-child {
+    color: #0d6efd;
+    width: 30%;
+    display: inline-block;
+    background-color: #2196f31a;
+    font-family: 'sahelBold';
+    float: left;
+    border-radius: 5px 15px 15px 5px;
+    border-right: 1px solid #008eff;
+    padding: 5px 10px;
+    transition: .3s;
+}
+
+.resultFilterElement span:last-child:hover {
+    border-right: 10px solid #008eff;
+    transition: .3s;
+}
+
+.resultFilterElement span:first-child {
+    width: 65%;
+    display: inline-block;
+    text-align: right;
+    font-family: 'sahelBold';
+}
+
+/*-----------------------------Scroll Bar Style-----------------------------*/
+
+::-webkit-scrollbar {
+    width: 0px;
 }

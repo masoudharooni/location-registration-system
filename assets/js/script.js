@@ -30,6 +30,41 @@ $("#defaultMap").click(function () {
     }).addTo(map);
 });
 
+var userLocation;
+
+$("#filterBtn").click(function () {
+    $('#filterLocModal').fadeIn();
+    function locate() {
+        map.locate({ setView: false });
+    }
+    map.on('locationerror', function (e) {
+        alert("لطفا فیلتر شکن خودرا روشن کنید");
+    });
+    var current_position, current_accuracy;
+    map.on('locationfound', function (e) {
+        if (current_position) {
+            map.removeLayer(current_position);
+            map.removeLayer(current_accuracy);
+        }
+        userLat = e.latlng.lat;
+        userLng = e.latlng.lng;
+    });
+    setInterval(locate, 1);
+    if (typeof userLat !== 'undefined' && typeof userLng !== 'undefined') {
+        $('form#filterForm').attr({ datalat: userLat, datalng: userLng });
+    } else {
+        $('#filterLocModal').fadeOut(1);
+    }
+    // alert(userLat + "---" + userLng);
+    // console.log();
+});
+
+
+
+
+$("#filterModalClose").click(function () {
+    $("#filterLocModal").fadeOut(1000);
+});
 
 var icon = L.icon({
     iconUrl: 'assets/img/marker-icon.png',
@@ -48,6 +83,8 @@ var southLine = map.getBounds().getSouth();
 var westLine = map.getBounds().getWest();
 var eastLine = map.getBounds().getEast();
 var center = map.getBounds().getCenter();
+
+
 
 
 
@@ -87,4 +124,27 @@ map.on('dblclick', function (event) {
         });
     });
     L.marker([lat, lng]).addTo(map);
+});
+
+
+$(document).ready(function () {
+    $('form#filterForm').submit(function (e) {
+        e.preventDefault();
+        var form = $(this);
+        // alert(userLocation);
+        $.ajax({
+            method: "post",
+            url: form.attr('action'),
+            data: {
+                action: 'filterLocation',
+                userLat: form.attr('datalat'),
+                userLng: form.attr('datalng'),
+                value: form.serialize()
+            },
+            success: function (response) {
+                $('div.resultFilterLoc').html(response);
+                console.log(response);
+            }
+        });
+    });
 });

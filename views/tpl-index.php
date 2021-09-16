@@ -37,7 +37,7 @@
 <body>
     <div class="main">
         <div class="head">
-            <input type="text" id="search" placeholder="دنبال کجا می گردی؟">
+            <input type="search" id="search" placeholder="دنبال کجا می گردی؟" autocomplete="off">
             <div class="locResult"></div>
         </div>
         <div class="mapContainer">
@@ -45,6 +45,7 @@
         </div>
         <div class="buttons">
             <i id="satellite" titles="برای تغیر به حالت ماهواره ای ، کلیک کنید!" class="fas fa-globe clickable satellite titleAtr"></i>
+            <i id="filterBtn" titles="برای فیلتر کردن نتایج کلیک کنید." class="fas fa-sort-amount-down-alt clickable satellite titleAtr"></i>
             <i id="defaultMap" titles="برای غیر به حالت اولیه کلیک کنید!" class="fas fa-map-marked-alt clickable satellite titleAtr"></i>
             <i id="userLoc" titles="موقعیت مکانی شما" class="fas fa-compass satellite clickable titleAtr"></i>
         </div>
@@ -64,7 +65,7 @@
                 </div>
                 <div class="element">
                     <label for="locName">نام مکان:</label>
-                    <input id="locName" type="text" name="name" class="form-control input" placeholder="مانند : میدان نقش جهان" aria-label="" aria-describedby="basic-addon1">
+                    <input id="locName" type="text" name="name" class="form-control input" placeholder="مانند : میدان نقش جهان" aria-label="" aria-describedby="basic-addon1" autocomplete="off">
                 </div>
                 <div class="element">
                     <label for="category">نوع مکان : </label>
@@ -80,7 +81,39 @@
         </div>
     </div>
 
+
+    <div id="filterLocModal" class="modall">
+        <div class="modalMain" style="height: 400px;">
+            <button id="filterModalClose" class="modalClose"><i class="fas fa-times clickable"></i></button>
+            <form id="filterForm" action="<?= BASE_URL . 'process/ajaxHandler.php' ?>" method="POST">
+                <div class="element">
+                    <label for="locName">محدوده ی مد نظر شما (کیلومتر):</label>
+                    <input id="locArea" type="number" name="area" class="form-control input" placeholder="برای مثال : 5 کیلو متر" aria-label="" aria-describedby="basic-addon1" autocomplete="off">
+                </div>
+                <div class="element">
+                    <label for="filterCategory"> نوع مکان مد نظر شما: </label>
+                    <select name="filterType" id="filterCategory" class="form-select input" aria-label="Default select example">
+                        <option selected value="">نوع مکان مورد نظر خود را وارد کنید.</option>
+                        <?php foreach (LOCATION_TYPE as $key => $value) : ?>
+                            <option value="<?= $key ?>"><?= $value ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <input type="submit" name="filterBtn" class="btn btn-primary input" value="ثبت">
+            </form>
+
+            <div class="resultFilterLoc">
+                <!-- <div class="resultFilterElement">
+                    <span>دانشگاه علمی کاربری اصفهان</span>
+                    <span>فاصله :51555 KM</span>
+                </div> -->
+            </div>
+
+        </div>
+    </div>
+
     <script src="assets/js/script.js"></script>
+
 
 
     <script>
@@ -132,7 +165,7 @@
                         value: searchInput
                     },
                     success: function(response) {
-                        $("div.locResult").html(response);
+                        $("div.locResult").slideDown().html(response);
                     }
                 });
             } else {

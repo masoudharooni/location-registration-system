@@ -111,14 +111,18 @@ function searchLoc(string $param)
 }
 
 
-function listOfVerifideLoc(/*$params = null*/)
+function listOfVerifideLoc(int $area = null, int $type = null, $lat = null, $lng = null)
 {
     global $conn;
-    // $activeCondition = null;
-    // if (isset($params['active']) and in_array($params['active'], [0, 1])) {
-    //     $activeCondition =  "WHERE status LIKE {$params['active']}";
-    // }
-    $sql = "SELECT id , user_id ,title , lat , lng , type , status , created_at FROM locations WHERE status LIKE 1";
+    $condition = null;
+    if (
+        !is_null($area) and !is_null($type) and !is_null($lat) and !is_null($lng) and
+        is_numeric($area) and is_numeric($type)
+    ) {
+        $areaLatLng = toggleToLatLng($area);
+        $condition =  "AND lat BETWEEN $lat - $areaLatLng AND $lat + $areaLatLng AND type LIKE $type";
+    }
+    $sql = "SELECT id , user_id ,title , lat , lng , type , status , created_at FROM locations WHERE status LIKE 1 $condition";
     $stmt = $conn->prepare($sql);
     $stmt->bind_result($id, $user_id, $title, $lat, $lng, $type, $status, $created_at);
     $stmt->execute();

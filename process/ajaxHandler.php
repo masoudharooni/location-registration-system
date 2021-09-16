@@ -20,3 +20,23 @@ if ($_POST['action'] == 'searchLoc' and is_string($_POST['value'])) {
         echo "<div class='locNotExist'>مکان مورد نظر شما پیدا نشد.</div>";
     }
 }
+
+
+if ($_POST['action'] == 'filterLocation') {
+    $area = explode('=', explode('&', $_POST['value'])[0])[1];
+    $locType = explode('=', explode('&', $_POST['value'])[1])[1];
+    // echo "area = $area ---- locType = $locType ----- userLat = $_POST[userLat]  ----- userLng = $_POST[userLng]";
+    $result = listOfVerifideLoc($area, $locType, $_POST['userLat'], $_POST['userLng']);
+    if (!is_null($result)) {
+        foreach ($result as $value) {
+            $distance = getDistance($value['lat'], $value['lng'], $_POST['userLat'], $_POST['userLng']);
+            $distance = round($distance, 4);
+            echo "<a href='?loc={$value['id']}'><div class='resultFilterElement'>
+                    <span>$value[title]</span>
+                    <span>{$distance}km</span>
+                </div></a>";
+        }
+    } else {
+        echo "<span class'locNotExist'>چنین مکانی وجود ندارد</span>";
+    }
+}
