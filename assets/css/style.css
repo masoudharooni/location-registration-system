@@ -231,3 +231,10 @@ input {
     padding-right: 10px;
     display: inline-block;
 }
+
+div.locNotExist {
+    text-align: center;
+    color: red;
+    padding: 10px;
+    font-family: 'sahel';
+}

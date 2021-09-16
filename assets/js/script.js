@@ -2,6 +2,14 @@ const defaultLocation = [32.3475088, 53.7819863];
 const defaultZoom = 6;
 var map = L.map('map').setView(defaultLocation, defaultZoom);
 
+$("#satellite").click(function () {
+    googleHybrid = L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
+        maxZoom: 18,
+        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+    }).addTo(map);
+});
+
+
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
     maxZoom: 18,
     attribution: 'My github account: <a href="https://github.com/masoudharooni" target="_blank">Click Here</a>',
@@ -9,6 +17,19 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
     tileSize: 512,
     zoomOffset: -1
 }).addTo(map);
+
+
+
+$("#defaultMap").click(function () {
+    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+        maxZoom: 18,
+        attribution: 'My github account: <a href="https://github.com/masoudharooni" target="_blank">Click Here</a>',
+        id: 'mapbox/streets-v11',
+        tileSize: 512,
+        zoomOffset: -1
+    }).addTo(map);
+});
+
 
 var icon = L.icon({
     iconUrl: 'assets/img/marker-icon.png',
@@ -28,22 +49,7 @@ var westLine = map.getBounds().getWest();
 var eastLine = map.getBounds().getEast();
 var center = map.getBounds().getCenter();
 
-$("#satellite").click(function () {
-    googleHybrid = L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
-        maxZoom: 18,
-        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-    }).addTo(map);
-});
 
-$("#defaultMap").click(function () {
-    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-        maxZoom: 18,
-        attribution: 'My github account: <a href="https://github.com/masoudharooni" target="_blank">Click Here</a>',
-        id: 'mapbox/streets-v11',
-        tileSize: 512,
-        zoomOffset: -1
-    }).addTo(map);
-});
 
 $("#userLoc").click(function () {
     function locate() {

@@ -11,4 +11,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 }
+
+$singleLoc = null;
+if (isset($_GET['loc']) and is_numeric($_GET['loc'])) {
+    $singleLoc = getSingleLoc($_GET['loc']);
+}
+
+$veriFideLocations = listOfVerifideLoc();
+
 include 'views/tpl-index.php';

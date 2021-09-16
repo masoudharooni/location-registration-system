@@ -19,8 +19,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 }
 
 if (isLoggedIn()) {
-    $params = $_GET ??  [];
-    $locations = getLocations();
+    $params = $_GET ?? [];
+    // dd($params);
+    $locations = getLocations($params);
     // dd($locations);
     include 'views/tpl-adm.php';
 } else {

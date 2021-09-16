@@ -1,3 +1,7 @@
+<?php
+
+use Hekmatinasser\Verta\Verta;
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -103,6 +107,7 @@
             background-color: rgb(238, 238, 238);
             padding: 7px 15px;
             border-radius: 25px;
+            color: #555;
         }
 
         table {
@@ -120,28 +125,30 @@
             background-color: rgb(246, 246, 246);
         }
 
-        span.activ {
+        span.active {
             background: rgb(0, 153, 0);
-            padding: 6px 20px;
+            padding: 6px 22px;
             color: #fff;
             font-weight: bold;
             border-radius: 20px;
+            float: right;
         }
 
-        span.activ:hover {
+        span.active:hover {
             background-color: green;
             cursor: pointer;
         }
 
-        span.unActiv {
+        span.unActive {
             background: rgb(221, 0, 0);
-            padding: 6px 20px;
+            padding: 6px 10px;
             color: #fff;
             font-weight: bold;
             border-radius: 20px;
+            float: right;
         }
 
-        span.unActiv:hover {
+        span.unActive:hover {
             background: rgb(187, 0, 0);
             cursor: pointer;
         }
@@ -149,6 +156,8 @@
         span.icon {
             font-size: 22px;
             cursor: pointer;
+            float: left;
+            margin-top: 2px;
         }
 
         span.icon:hover {
@@ -177,18 +186,29 @@
         #map {
             width: 80%;
             height: 450px;
-            background-color: white;
             margin: 100px auto;
+            display: block;
+            position: relative;
         }
 
         .closeIcon {
             font-size: 25px;
-            position: relative;
+            position: absolute;
             top: 10px;
             right: 15px;
             z-index: 99999;
             color: red;
             cursor: pointer;
+        }
+
+        .notExist {
+            text-align: center;
+            font-family: 'sahelBlack';
+            color: #3f51b5;
+            background-color: #00ffe721;
+            margin: auto;
+            border-radius: 10px 10px 0 0;
+            padding: 7px;
         }
     </style>
 </head>
@@ -199,9 +219,10 @@
         <header id="header">
             <span class="exit"><a href="?logout=true">خروج</a></span>
             <div class="right">
+                <span class="active"><a href="?active=1">فعال</a></span>
+                <span class="unActive" style="margin-left: 10px;"><a href="?active=2">همه</a></span>
+                <span class="unActive"><a href="?active=0">غیر فعال</a></span>
                 <a href="<?= BASE_URL ?>"><span class="home"><i class="fas fa-home"></i></span></a>
-                <span class="active">فعال</span>
-                <span class="unActive">غیر فعال</span>
             </div>
         </header>
     </div>
@@ -216,51 +237,72 @@
                 <th>وضعیت</th>
             </tr>
 
-            <?php foreach ($locations as $value) : ?>
-                <tr>
-                    <td class=name"><?= $value['title'] ?></td>
-                    <?php $date = explode('-', explode(" ", $value['createdAt'])[0]); ?>
-                    <td><?= gregorian_to_jalali($date[0], $date[1], $date[2], '/') . " در ساعت " . explode(" ", $value['createdAt'])[1] ?></td>
-                    <td><?= $value['lat'] ?></td>
-                    <td><?= $value['lng'] ?></td>
-                    <td><span class="activ">فعال</span></td>
-                    <td><span class="unActiv">غیر فعال</span></td>
-                    <td><span class="icon"><i class="fas fa-eye"></i></span></td>
-                </tr>  
-            <?php endforeach; ?>
+            <?php
+            if (!is_null($locations)) {
+                foreach ($locations as $value) : ?>
+                    <tr>
+                        <td class=name"><?= $value['title'] ?></td>
+                        <?php $time = explode(' ', $value['createdAt']) ?>
+                        <td><?php $v = new Verta($value['createdAt']);
+                            echo $v->format('%d %B %Y') . "<br>" . "<span style='color:#ff0040; font-family:sahelBlack;margin-left:5px'>زمان:</span>" . $time[1]; ?></td>
+                        <td><?= $value['lat'] ?></td>
+                        <td><?= $value['lng'] ?></td>
+                        <td>
+                            <span id="status" data-id="<?= $value['id'] ?>" data-status="<?= ($value['status']) ? 0 : 1 ?>" class="<?= ($value['status'] ? "active" : "unActive") ?>"><?= ($value['status'] ? "فعال" : 'غیر فعال') ?></span>
+                            <span data-id="<?= $value['id']; ?>" class="icon"><i class="fas fa-eye"></i></span>
+                        </td>
+                    </tr>
+                <?php endforeach;
+            } else { ?>
+
+                <div class="notExist">هیچ لوکیشینی وجود ندارد.</div>
+            <?php } ?>
 
         </table>
     </div>
 
 
     <div id="modal" class="modal">
-        <div id="map">
+        <div class="modal-averly" id="map">
             <i class="fas fa-times closeIcon"></i>
+            <iframe style="width: 100%; height: 100%;" id="iframe">
+            </iframe>
         </div>
     </div>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script>
-        var map = L.map('map').setView([51.505, -0.09], 13);
-
-        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-            maxZoom: 18,
-            id: 'mapbox/streets-v11',
-            tileSize: 512,
-            zoomOffset: -1
-        }).addTo(map);
-
-        // L.marker([51.5, -0.09]).addTo(map)
-        //     .bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
-
-
         $(document).ready(function() {
             $("span.icon").click(function() {
+                var id = $(this).attr("data-id");
                 $(".modal").fadeIn(1000);
+                $("#iframe").attr('src', "index.php?loc=" + id);
             });
 
             $("i.closeIcon").click(function() {
                 $(".modal").fadeOut(1000);
             });
+
+
+            $("span#status").click(function() {
+                var status = $(this).attr("data-status");
+                var id = $(this).attr("data-id");
+                $.ajax({
+                    type: "post",
+                    url: "process/ajaxHandler.php",
+                    data: {
+                        action: 'activeLoc',
+                        id: id,
+                        status: status
+                    },
+                    success: function(response) {
+                        location.reload();
+                    }
+                });
+            });
+
+
+
 
         });
     </script>

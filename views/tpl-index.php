@@ -19,26 +19,26 @@
     <!-- bootstrap cdn -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js" integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/" crossorigin="anonymous"></script>
+    <style>
+        a {
+            color: inherit;
+        }
+
+        a:hover {
+            color: inherit;
+        }
+
+        .locResult span.notExist {
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body>
     <div class="main">
         <div class="head">
             <input type="text" id="search" placeholder="دنبال کجا می گردی؟">
-            <div class="locResult">
-                <div class="eleman">
-                    <span class="category">رستوران</span>
-                    <span class="title">رستوران و قهوه ی خانه ی سنتی</span>
-                </div>
-                <div class="eleman">
-                    <span class="category">اماکن تاریخی</span>
-                    <span class="title">شرکت نکت وان کد</span>
-                </div>
-                <div class="eleman">
-                    <span class="category">دانشگاه</span>
-                    <span class="title">دانشگاه صنعتی اصفهان</span>
-                </div>
-            </div>
+            <div class="locResult"></div>
         </div>
         <div class="mapContainer">
             <div id="map"></div>
@@ -113,6 +113,47 @@
         }
         ?>
     </script>
+
+
+    <script>
+        <?php if (!is_null($singleLoc)) : ?>
+            L.marker([<?= $singleLoc['lat'] ?>, <?= $singleLoc['lng'] ?>]).addTo(map).bindPopup("<b><?= $singleLoc['title'] ?></b><br /> <?= LOCATION_TYPE[$singleLoc['type']] ?>.");
+            map.setView([<?= $singleLoc['lat'] ?>, <?= $singleLoc['lng'] ?>], 15);
+        <?php endif; ?>
+
+        $('#search').keyup(function(e) {
+            var searchInput = $("#search").val();
+            if (searchInput != '') {
+                $.ajax({
+                    type: "post",
+                    url: "process/ajaxHandler.php",
+                    data: {
+                        action: 'searchLoc',
+                        value: searchInput
+                    },
+                    success: function(response) {
+                        $("div.locResult").html(response);
+                    }
+                });
+            } else {
+                $("a#resultSearchLink").remove();
+                $("div.locNotExist").remove();
+            }
+        });
+    </script>
+
+
+    <script>
+        $(document).ready(function() {
+            <?php if (!is_null($veriFideLocations)) :
+                foreach ($veriFideLocations as $value) :
+            ?>
+                    L.marker([<?= $value['lat'] ?>, <?= $value['lng'] ?>]).addTo(map).bindPopup("<b><?= $value['title'] ?></b><br /> <?= LOCATION_TYPE[$value['type']] ?>.");
+            <?php endforeach;
+            endif; ?>
+        });
+    </script>
+
 
 </body>
 
