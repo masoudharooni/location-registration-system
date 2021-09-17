@@ -33,7 +33,7 @@ if ($_POST['action'] == 'filterLocation') {
             $distance = round($distance, 4);
             echo "<a href='?loc={$value['id']}'><div class='resultFilterElement'>
                     <span>$value[title]</span>
-                    <span>{$distance}km</span>
+                    <span>فاصله : {$distance}km</span>
                 </div></a>";
         }
     } else {

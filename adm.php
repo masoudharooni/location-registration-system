@@ -18,6 +18,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
 }
 
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    if (!empty($_GET['delete']) and is_numeric($_GET['delete'])) {
+        deleteLocation($_GET['delete']);
+        header("location:adm.php");
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    if (!empty($_GET['type']) and is_numeric($_GET['type'])) {
+        $locations = getLocations($_GET['type']);
+    }
+}
+
 if (isLoggedIn()) {
     $params = $_GET ?? [];
     // dd($params);

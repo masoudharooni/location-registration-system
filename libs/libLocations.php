@@ -27,7 +27,20 @@ function getLocations($params = null)
     if (isset($params['active']) and in_array($params['active'], [0, 1])) {
         $activeCondition =  "WHERE status LIKE {$params['active']}";
     }
-    $sql = "SELECT id , user_id ,title , lat , lng , type , status , created_at FROM locations {$activeCondition}";
+
+    $typeCondition = null;
+    if (isset($params['type']) and is_numeric($params['type'])) {
+        $typeCondition =  "WHERE type LIKE {$params['type']}";
+    }
+
+    $sortCondtion = null;
+    // 0 equal to desc and 1 equal to asc
+    if (isset($params['sort']) and in_array($params['sort'], [0, 1])) {
+        $sortBy = $params['sort'] ? 'ASC' : 'DESC';
+        $typeCondition =  "ORDER BY created_at {$sortBy}";
+    }
+
+    $sql = "SELECT id , user_id ,title , lat , lng , type , status , created_at FROM locations {$activeCondition} {$typeCondition} {$sortCondtion}";
     $stmt = $conn->prepare($sql);
     $stmt->bind_result($id, $user_id, $title, $lat, $lng, $type, $status, $created_at);
     $stmt->execute();
@@ -120,7 +133,8 @@ function listOfVerifideLoc(int $area = null, int $type = null, $lat = null, $lng
         is_numeric($area) and is_numeric($type)
     ) {
         $areaLatLng = toggleToLatLng($area);
-        $condition =  "AND lat BETWEEN $lat - $areaLatLng AND $lat + $areaLatLng AND type LIKE $type";
+        $condition =  "AND lat BETWEEN $lat - $areaLatLng AND $lat + $areaLatLng AND lng BETWEEN $lng - $areaLatLng AND $lng + $areaLatLng  AND type LIKE $type";
+        // $condition =  "AND lat > $lat-$areaLatLng AND lat < $lat+$areaLatLng AND type LIKE $type";
     }
     $sql = "SELECT id , user_id ,title , lat , lng , type , status , created_at FROM locations WHERE status LIKE 1 $condition";
     $stmt = $conn->prepare($sql);
@@ -141,4 +155,14 @@ function listOfVerifideLoc(int $area = null, int $type = null, $lat = null, $lng
         $counter++;
     }
     return $locations ?? null;
+}
+
+
+function deleteLocation(int $id): bool
+{
+    global $conn;
+    $sql = "DELETE FROM locations WHERE id LIKE ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $id);
+    return $stmt->execute() ? true : false;
 }

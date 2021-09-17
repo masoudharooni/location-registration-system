@@ -14,7 +14,7 @@ function siteUrl(string $query_string = null)
 
 function toggleToLatLng(int $km)
 {
-    $lat = $km * 0.01;
+    $lat = $km * 0.009009009009;
     return $lat;
 }
 
