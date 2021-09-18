@@ -1,6 +1,10 @@
 <?php
 include 'bootstrap/init.php';
 
+if (!isUserLoggedIn()) {
+    header("location: auth.php");
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['btn']) and $_POST['btn'] == 'ثبت') {
         if (!empty($_POST['lat']) and !empty($_POST['lng']) and !empty($_POST['name']) and !empty($_POST['type'])) {

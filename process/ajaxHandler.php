@@ -40,3 +40,77 @@ if ($_POST['action'] == 'filterLocation') {
         echo "<span class'locNotExist'>چنین مکانی وجود ندارد</span>";
     }
 }
+
+
+
+if ($_POST['action'] == 'userRegister') {
+    $expload = explode('&', $_POST['data']);
+    $data = [
+        'firstname' => explode('=', $expload[0])[1],
+        'lastname' => explode('=', $expload[1])[1],
+        'email' => explode('=', $expload[2])[1],
+        'emailConfirm' => explode('=', $expload[3])[1],
+        'password' => explode('=', $expload[4])[1],
+        'passwordConfirm' => explode('=', $expload[5])[1]
+    ];
+    $registerResult = userRegister($data);
+    echo $registerResult['alert'];
+}
+
+
+if ($_POST['action'] == 'userLogin') {
+    $expload = explode('&', $_POST['data']);
+    $data = [
+        'email' => explode('=', $expload[0])[1],
+        'password' => explode('=', $expload[1])[1]
+    ];
+    // var_dump($_POST);
+    if (!userLogin($data)) {
+        echo "ایمیل یا رمز ورود صحیح نمی باشد.";
+    } else {
+        echo true;
+    }
+}
+
+if ($_POST['action'] == 'passRecover' and isset($_POST['data'])) {
+    // var_dump($_POST);
+    $expload = explode('&', $_POST['data']);
+    $data = [
+        'email' => explode('=', $expload[0])[1],
+        'password' => explode('=', $expload[1])[1]
+    ];
+    // var_dump($data);
+    if (isThereEmail($data['email'])) {
+        if (isValidPass($data['password'])) {
+            $code = sendEmail($data['email']);
+            if (!is_null($code)) {
+                echo "کدی که برای شما ایمیل شد را وارد کنید";
+                $_SESSION['passRecovery'] = [
+                    'email' => $data['email'],
+                    'password' => $data['password'],
+                    'code' => $code
+                ];
+            }
+        } else {
+            echo "پسورد ایمن نیست.";
+        }
+    } else {
+        echo "این ایمیل وجود ندارد ، ثبت نام کنید.";
+    }
+}
+
+
+if ($_POST['action'] == 'passRecover' and isset($_POST['code'])) {
+    if (isset($_SESSION['passRecovery'])) {
+        if ($_SESSION['passRecovery']['code'] == $_POST['code']) {
+            if (updatePassword($_SESSION['passRecovery']['email'], $_SESSION['passRecovery']['password'])) {
+                echo "پسورد شما بروزرسانی شد ، لطفا وارد شوید.";
+            } else {
+                echo "پسورد شما بروزرسانی نشد ، مجددا تلاش کنید.";
+            }
+        } else {
+            echo "کد تایید صحیح نمی باشد.";
+        }
+        unset($_SESSION['passRecovery']);
+    }
+}

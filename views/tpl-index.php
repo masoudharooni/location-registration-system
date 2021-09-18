@@ -53,8 +53,7 @@
 
 
     <div id="registerLoc" class="modall">
-        <div class="
-        Main">
+        <div class="modalMain">
             <button class="modalClose"><i class="fas fa-times clickable"></i></button>
             <form action="<?php $_SERVER['PHP_SELF'] ?>" method="POST">
                 <div class="element">

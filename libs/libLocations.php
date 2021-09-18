@@ -2,7 +2,7 @@
 
 function getCurentUserId()
 {
-    return true;
+    return $_SESSION['userLogin']['id'];
 }
 
 //---------------------------------------Add Location in DataBase---------------------------------------

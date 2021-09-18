@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'b9e5dbc773a2e8d31b984a80e1e9ac08781e052d',
+        'reference' => '409e42adda0217961b836e1a43e09f598fa3edd1',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'b9e5dbc773a2e8d31b984a80e1e9ac08781e052d',
+            'reference' => '409e42adda0217961b836e1a43e09f598fa3edd1',
             'dev_requirement' => false,
         ),
         'doctrine/inflector' => array(
@@ -143,6 +143,15 @@
             'install_path' => __DIR__ . '/../nesbot/carbon',
             'aliases' => array(),
             'reference' => 'f4655858a784988f880c1b8c7feabbf02dfdf045',
+            'dev_requirement' => false,
+        ),
+        'phpmailer/phpmailer' => array(
+            'pretty_version' => 'v6.5.1',
+            'version' => '6.5.1.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../phpmailer/phpmailer',
+            'aliases' => array(),
+            'reference' => 'dd803df5ad7492e1b40637f7ebd258fee5ca7355',
             'dev_requirement' => false,
         ),
         'psr/container' => array(

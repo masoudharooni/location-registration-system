@@ -38,5 +38,5 @@ if (isLoggedIn()) {
     // dd($locations);
     include 'views/tpl-adm.php';
 } else {
-    include 'views/tpl-auth.php';
+    include 'views/tpl-adm-auth.php';
 }
