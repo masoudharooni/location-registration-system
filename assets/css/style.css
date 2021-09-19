@@ -296,3 +296,47 @@ div.locNotExist {
 ::-webkit-scrollbar {
     width: 0px;
 }
+
+/*-----------------------------RESPONSIVE WEBSITE FOR TABLET-----------------------------*/
+
+@media only screen and (max-width: 768px) {
+    div.profile {
+        width: 50%;
+    }
+    div.modalMain {
+        width: 80%;
+    }
+    div#filterLocModal {
+        width: 80%;
+    }
+}
+
+/*-----------------------------RESPONSIVE WEBSITE FOR TABLET-----------------------------*/
+
+@media only screen and (max-width: 400px) {
+    div.head {
+        /* background-color: red; */
+        text-align: right;
+        margin-top: 44px;
+    }
+    div.head input#search {
+        width: 300px;
+    }
+    div.head div.locResult {
+        width: 300px;
+    }
+    div.profile {
+        width: 80%;
+    }
+    div.modalMain {
+        width: 95%;
+        height: 380px;
+    }
+    div#filterLocModal {
+        width: 95%;
+        height: 380px;
+    }
+    div.showLoc input{
+        display: block;
+    }
+}
