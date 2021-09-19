@@ -1,3 +1,7 @@
+<?php
+
+use Hekmatinasser\Verta\Verta;
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,6 +35,151 @@
         .locResult span.notExist {
             text-align: center;
         }
+
+        .profile {
+            width: 32%;
+            height: 80%;
+            background: #257eca;
+            z-index: 99999;
+            position: absolute;
+            bottom: 10%;
+            border-radius: 50px 0 0 50px;
+            display: none;
+        }
+
+        i.fas.fa-times.profileClose {
+            color: red;
+            font-size: 35px;
+            position: relative;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+        .img {
+            text-align: center;
+            margin-top: 10px;
+            border-bottom: 5px solid #fff;
+        }
+
+        .img img {
+            width: 110px;
+        }
+
+        p.nameUser {
+            font-size: 25px;
+            font-family: sahelBlack;
+            margin-top: 10px;
+            color: #fff;
+        }
+
+        .info {
+            border-bottom: 5px solid #fff;
+        }
+
+        .info p.title {
+            color: #fff;
+            font-size: 25px;
+            text-align: center;
+            font-family: 'sahelBlack';
+            padding-top: 15px;
+        }
+
+        .info p:not(p.title) {
+            font-family: sahel;
+            color: #fff;
+            padding: 0 20px;
+        }
+
+        .info p span {
+            font-family: sahelBlack;
+            padding-left: 10px;
+        }
+
+        .profileLocations {
+            /* background-color: red; */
+            padding: 10px 30px;
+        }
+
+        .profileLocations .title {
+            text-align: center;
+            font-family: sahelBlack;
+            color: #fff;
+            font-size: 22px;
+        }
+
+        .listOfLocations {
+            background-color: #a2d6ff;
+            height: 100px;
+            overflow-y: scroll;
+        }
+
+        .listOfLocations .loc {
+            border-bottom: 1px solid gray;
+            padding: 10px;
+            font-family: 'sahelBlack';
+            cursor: pointer;
+        }
+
+        .listOfLocations .loc:hover {
+            background-color: #82c0f1;
+        }
+
+        .listOfLocations .loc span:first-child {
+            color: #444;
+        }
+
+        .listOfLocations .loc span:last-child {
+            float: left;
+            padding: 7px 15px;
+            background-color: #ffffff;
+            border-right: 3px solid #257eca;
+            border-radius: 5px 20px 20px 5px;
+            position: relative;
+            bottom: 7px;
+            color: #000;
+            direction: rtl;
+            transition: .3s;
+        }
+
+        .listOfLocations .loc span:last-child:hover {
+            border-right: 15px solid #257eca;
+            transition: .3s;
+            border-radius: 5px 20px 20px 5px;
+        }
+
+
+        botton.userLogout {
+            font-family: 'sahelBlack';
+            color: #257eca;
+            padding: 10px 30px;
+            border-radius: 10px;
+            background: #fff;
+            position: relative;
+            top: 20px;
+            right: 25%;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        botton.userLogout:hover {
+            border-radius: 0;
+            transition: .3s;
+        }
+
+        .listOfLocations .locationNotExist {
+            color: #000;
+            font-family: 'sahelBlack';
+            font-size: 20px;
+            position: relative;
+            top: 43%;
+            right: 25%;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
     </style>
 </head>
 
@@ -44,9 +193,10 @@
             <div id="map"></div>
         </div>
         <div class="buttons">
-            <i id="satellite" titles="برای تغیر به حالت ماهواره ای ، کلیک کنید!" class="fas fa-globe clickable satellite titleAtr"></i>
-            <i id="filterBtn" titles="برای فیلتر کردن نتایج کلیک کنید." class="fas fa-sort-amount-down-alt clickable satellite titleAtr"></i>
-            <i id="defaultMap" titles="برای غیر به حالت اولیه کلیک کنید!" class="fas fa-map-marked-alt clickable satellite titleAtr"></i>
+            <i id="userPanel" titles="اطلاعات شما!" class="fas fa-user clickable satellite titleAtr"></i>
+            <i id="satellite" titles="حالت ماهواره ای!" class="fas fa-globe clickable satellite titleAtr"></i>
+            <i id="filterBtn" titles="فیلتر کردن لوکیشن ها." class="fas fa-sort-amount-down-alt clickable satellite titleAtr"></i>
+            <i id="defaultMap" titles="حالت اولیه!" class="fas fa-map-marked-alt clickable satellite titleAtr"></i>
             <i id="userLoc" titles="موقعیت مکانی شما" class="fas fa-compass satellite clickable titleAtr"></i>
         </div>
     </div>
@@ -102,21 +252,70 @@
                 <input type="submit" name="filterBtn" class="btn btn-primary input" value="ثبت">
             </form>
 
-            <div class="resultFilterLoc">
-                <!-- <div class="resultFilterElement">
-                    <span>دانشگاه علمی کاربری اصفهان</span>
-                    <span>فاصله :51555 KM</span>
-                </div> -->
-            </div>
+            <div class="resultFilterLoc"></div>
 
         </div>
     </div>
+
+
+
+    <!-- user Profile -->
+    <div class="profile">
+        <i class="fas fa-times profileClose"></i>
+        <div class="img">
+            <img src="assets/img/PinClipart.com_earthquake-clipart_5260378.png" alt="Website Image">
+            <p class="nameUser">سلام <?= $_SESSION['userLogin']['firstname']; ?> عزیز</p>
+        </div>
+
+        <div class="info">
+            <p class="title">اطلاعات شما</p>
+            <?php $time = explode(' ', $_SESSION['userLogin']['created_at']) ?>
+            <p class="created_at"><span>زمان عضویت شما :</span> <?php $v = new Verta($time[1]);
+                                                                echo $v->format('%d %B %Y') ?></p>
+            <p class="email"><span>ایمیل شما :</span> <?= $_SESSION['userLogin']['email']; ?></p>
+        </div>
+
+        <div class="profileLocations">
+            <p class="title">مکان هایی که شما ثبت کردید</p>
+            <div class="listOfLocations">
+                <?php if (!is_null($userLocationProfile)) {
+                    foreach ($userLocationProfile as $value) {
+                ?>
+                        <a href="?loc=<?= $value['id'] ?>">
+                            <div class="loc">
+                                <span><?= $value['title'] ?></span>
+                                <span><?= $value['status'] ? 'فعال' : 'درحال برسی' ?></span>
+                            </div>
+                        </a>
+                    <?php
+                    }
+                } else { ?>
+                    <div class="locationNotExist">شما مکانی ثبت نکرده اید.</div>
+                <?php } ?>
+            </div>
+
+            <a href="?userLogout=1">
+                <botton class="userLogout">خروج از حساب</botton>
+            </a>
+        </div>
+    </div>
+
+    <!-- user Profile -->
 
     <script src="assets/js/script.js"></script>
 
 
 
     <script>
+        $(document).ready(function() {
+            $("i.profileClose").click(function(e) {
+                $("div.profile").fadeOut(1000);
+            });
+            $('i#userPanel').click(function(e) {
+                $("div.profile").fadeIn(1000);
+            });
+        });
+
         //---------------------------------------Query String For Show add Location alert---------------------------------------
         <?php
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {

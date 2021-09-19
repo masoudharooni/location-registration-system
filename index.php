@@ -23,4 +23,11 @@ if (isset($_GET['loc']) and is_numeric($_GET['loc'])) {
 
 $veriFideLocations = listOfVerifideLoc();
 
+
+$userLocationProfile = userLocationsProfile($_SESSION['userLogin']['id']);
+
+if (isset($_GET['userLogout']) and in_array($_GET['userLogout'], [0, 1])) {
+    userLogout();
+}
+
 include 'views/tpl-index.php';

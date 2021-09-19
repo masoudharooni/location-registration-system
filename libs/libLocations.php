@@ -166,3 +166,35 @@ function deleteLocation(int $id): bool
     $stmt->bind_param('i', $id);
     return $stmt->execute() ? true : false;
 }
+
+
+function userLocationsProfile(int $userId)
+{
+    global $conn;
+    $sql = "SELECT id , user_id ,title , lat , lng , type , status , created_at FROM locations WHERE user_id LIKE {$userId}";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_result($id, $user_id, $title, $lat, $lng, $type, $status, $created_at);
+    $stmt->execute();
+    $counter = 0;
+    while ($stmt->fetch()) {
+        $locations[$counter] = [
+            'id'        => $id,
+            'userId'    => $user_id,
+            'title'     => $title,
+            'lat'       => $lat,
+            'lng'       => $lng,
+            'type'      => $type,
+            'status'    => $status,
+            'createdAt' => $created_at
+        ];
+        $counter++;
+    }
+    return $locations ?? null;
+}
+
+
+function userLogout()
+{
+    unset($_SESSION['userLogin']);
+    header("location: " . BASE_URL);
+}
