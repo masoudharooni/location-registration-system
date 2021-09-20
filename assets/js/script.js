@@ -148,3 +148,9 @@ $(document).ready(function () {
         });
     });
 });
+
+
+// $('.deleteLocUser').click(function (e) { 
+//     e.preventDefault();
+//     alert('ok');
+// });

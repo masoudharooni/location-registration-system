@@ -180,3 +180,25 @@ function updatePassword(string $email, string $password)
     }
     return false;
 }
+
+
+// --------------------------------GET USER BY ID--------------------------------
+function getUserById(int $userId)
+{
+    global $conn;
+    $sql = "SELECT id , firstname , lastname , email , password , created_at FROM users WHERE id LIKE ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $userId);
+    $stmt->bind_result($id, $firstname, $lastname, $emailNow, $password, $created_at);
+    $stmt->execute();
+    $stmt->fetch();
+    $result = [
+        'id' => $id,
+        'firstname' => $firstname,
+        'lastname' => $lastname,
+        'email' => $emailNow,
+        'password' => $password,
+        'created_at' => $created_at
+    ];
+    return $result ?? null;
+}

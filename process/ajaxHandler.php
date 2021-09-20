@@ -114,3 +114,13 @@ if ($_POST['action'] == 'passRecover' and isset($_POST['code'])) {
         unset($_SESSION['passRecovery']);
     }
 }
+
+
+if ($_POST['action'] == 'editLocationByAdmin') {
+    $expload = explode('&', $_POST['data']);
+    $data = [
+        'name' => explode('=', $expload[0])[1],
+        'type' => explode('=', $expload[1])[1]
+    ];
+    echo updateLocation($_POST['id'], $data['type'], $data['name']) ?? 'مکان بروزرسانی نشد ، مجددا تلاش کنید.';
+}

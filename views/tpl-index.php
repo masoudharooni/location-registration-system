@@ -283,6 +283,9 @@ use Hekmatinasser\Verta\Verta;
                 ?>
                         <a href="?loc=<?= $value['id'] ?>">
                             <div class="loc">
+                                <a title="حذف <?= $value['title'] ?>" href="?deleteLoc=<?= $value['id'] ?>" onclick="return confirm('مطمئـــــــــــــــــــــــن هستید از حذف  <?= $value['title'] ?>؟')">
+                                    <i data-locId="<?= $value['id'] ?>" class="fas fa-backspace deleteLocUser" style="color: red;margin-left: 7px;font-size: 22px;vertical-align: -4px;"></i>
+                                </a>
                                 <span><?= $value['title'] ?></span>
                                 <span><?= $value['status'] ? 'فعال' : 'درحال برسی' ?></span>
                             </div>
@@ -295,7 +298,7 @@ use Hekmatinasser\Verta\Verta;
             </div>
 
             <a href="?userLogout=1">
-                <botton class="userLogout">خروج از حساب</botton>
+                <botton onclick="return confirm('از خروج خود اطمینان داریــــــــد؟')" class="userLogout">خروج از حساب</botton>
             </a>
         </div>
     </div>

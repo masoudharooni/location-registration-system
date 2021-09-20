@@ -198,3 +198,13 @@ function userLogout()
     unset($_SESSION['userLogin']);
     header("location: " . BASE_URL);
 }
+
+
+function updateLocation(int $id, int $type, string $name): bool
+{
+    global $conn;
+    $sql = 'UPDATE locations SET type = ? , title = ? WHERE id = ?';
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('isi', $type, $name, $id);
+    return $stmt->execute() ?? false;
+}

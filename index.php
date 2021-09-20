@@ -30,4 +30,9 @@ if (isset($_GET['userLogout']) and in_array($_GET['userLogout'], [0, 1])) {
     userLogout();
 }
 
+if (isset($_GET['deleteLoc']) and is_numeric($_GET['deleteLoc'])) {
+    deleteLocation($_GET['deleteLoc']);
+    header("Location:" . BASE_URL);
+}
+
 include 'views/tpl-index.php';
