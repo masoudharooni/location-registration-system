@@ -26,6 +26,7 @@ This is a Location Registration For location registration
 # user profile 
 - display your info
 - display your location info
+- delete a location
 - logout
 
 # authentication form
