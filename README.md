@@ -6,7 +6,6 @@ This is a Location Registration For location registration
 - if your location verifide Will be displayed to all users
 - filtering location by type and Distance with you
 - satellite mood
-- display your location
 - search location 
 
 
