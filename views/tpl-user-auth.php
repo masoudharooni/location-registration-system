@@ -7,7 +7,18 @@
     <link href="assets/img/favicon.png" rel="shortcut icon" type="image/png">
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css'>
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
-   <link rel="stylesheet" href="assets/css/auth.css">
+    <link rel="stylesheet" href="assets/css/auth.css">
+    <style>
+        .resultَAuth {
+            /* padding: 10px; */
+            text-align: center;
+            background: #26a69a;
+            color: #fff;
+            font-weight: bold;
+            font-size: 18px;
+            font-family: 'sahelBlack';
+        }
+    </style>
 </head>
 
 <body>
@@ -86,6 +97,7 @@
                 </div>
             </form>
         </div>
+        <div id="resultAuth" class="resultَAuth"></div>
     </div>
     <!-- partial -->
     <script src='https://code.jquery.com/jquery-2.1.1.min.js'></script>
@@ -115,7 +127,7 @@
                 var form = $(this);
                 var editserialize = form.serialize();
                 editserialize = decodeURIComponent(editserialize.replace(/%2F/g, " "));
-                // alert(form.serialize());
+
                 $.ajax({
                     type: "post",
                     url: form.attr('action'),
@@ -124,8 +136,9 @@
                         data: editserialize
                     },
                     success: function(response) {
-                        alert(response);
-                        location.reload();
+                        $('div#resultAuth').html(response).css({
+                            padding: '10px'
+                        });
                     }
                 });
             });
@@ -147,7 +160,9 @@
                         if (response == 1) {
                             window.location.href = "http://localhost/map/";
                         } else {
-                            alert(response);
+                            $('div#resultAuth').html(response).css({
+                                padding: '10px'
+                            });
                         }
                     }
                 });
