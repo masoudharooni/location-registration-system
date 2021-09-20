@@ -4,14 +4,42 @@ This is a Location Registration For location registration
 # location-registration-system for users
 - registration location
 - if your location verifide Will be displayed to all users
-- filtering location for to show you
+- filtering location by type and Distance with you
+- satellite mood
+- display your location
+- search location 
+
 
 # **location-registration-system for admin**
+- login
 - Verification locations 
 - preview locaiotn 
-### filtering locaiton for display
-- sort location by ascending or descending by created at
-- sort location by verifide or not verifide
+- sort location by oldest
+- sort location by newest
+- sort location by location type
+- sort location by unactive
+- sort location by active
+- delete locations
+- edit locations
+
+
+# user profile 
+- display your info
+- display your location info
+- logout
+
+# authentication form
+### register form
+- register with safe password 
+- register with vadid email
+
+### login form
+- login with your email and password
+
+### forget password 
+- send email for reset password
+
+
 
 
 
