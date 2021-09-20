@@ -11,6 +11,7 @@ This is a Location Registration For location registration
 
 # **location-registration-system for admin**
 - login
+- logout
 - Verification locations 
 - preview locaiotn 
 - sort location by oldest
