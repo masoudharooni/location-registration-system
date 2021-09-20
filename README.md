@@ -41,7 +41,7 @@ This is a Location Registration
 - send email for reset password
 
 
-# persian description
+# persian description --- توضیحات فارسی
 ### سیستم ثبت موقعیت مکانی برای کاربر
 - ثبت یک مکان
 - درصورت تایید ادمین مکان برای تمام کاربران نمایش داده خواهد شد
